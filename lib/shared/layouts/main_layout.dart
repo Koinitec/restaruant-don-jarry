@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:restaruant_don_jarry/pages/home_page.dart';
+import 'package:restaruant_don_jarry/features/home/presentation/screens/home_screens.dart';
+import 'package:restaruant_don_jarry/features/inventory/presentation/screens/inventory_screens.dart';
 import 'package:restaruant_don_jarry/pages/menu_page.dart';
-import 'package:restaruant_don_jarry/shared/navigation/bottom_navigation_bar.dart';
+import 'package:restaruant_don_jarry/shared/widgets/navigation/bottom_navigation_bar_widget.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -41,10 +42,10 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      Scaffold(body: HomePage()),
+      Scaffold(body: HomeScreens()),
       Scaffold(body: MenuPage()),
-      Scaffold(body: Center(child: Text('Inventario'))),
       Scaffold(body: Center(child: Text('Pedidos'))),
+      Scaffold(body: InventoryScreens()),
       Scaffold(body: Center(child: Text('Reportes'))),
       Scaffold(body: Center(child: Text('Ventas'))),
     ];
@@ -56,7 +57,7 @@ class _MainLayoutState extends State<MainLayout> {
         onPageChanged: _onPageChanged,
         children: pages,
       ),
-      bottomNavigationBar: BottomNavigationBarShared(
+      bottomNavigationBar: BottomNavigationBarWidget(
         currentIndex: _currentIndex,
         onChanged: _onNavChanged,
       ),

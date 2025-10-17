@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class Header extends StatelessWidget {
+class HeaderWidget extends StatelessWidget {
   final Widget title;
   final List<FHeaderAction> suffixes;
   final bool showBack;
   final VoidCallback? onBack;
   final bool nested;
 
-  const Header({
+  const HeaderWidget({
     super.key,
     required this.title,
     this.suffixes = const [],

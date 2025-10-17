@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class BottomNavigationBarShared extends StatelessWidget {
+class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onChanged;
 
-  const BottomNavigationBarShared({
+  const BottomNavigationBarWidget({
     super.key,
     required this.currentIndex,
     required this.onChanged,
