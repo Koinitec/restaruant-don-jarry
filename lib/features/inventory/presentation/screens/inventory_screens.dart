@@ -27,7 +27,7 @@ class _InventoryScreensState extends State<InventoryScreens> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
 
-  // Colores personalizados tipo KFC 🍗
+  // Colores tipo KFC 🍗
   Color get primaryColor => const Color(0xFFd35400);
   Color get warningColor => const Color(0xFFf39c12);
   Color get dangerColor => Colors.redAccent;
@@ -51,68 +51,81 @@ class _InventoryScreensState extends State<InventoryScreens> {
           builder: (context, constraints) {
             final width = constraints.maxWidth;
             final double iconSize = (width / 35).clamp(22, 32);
-            int crossAxisCountProducts = width < 600
-                ? 1
-                : width < 900
-                ? 2
-                : 3;
 
             return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const InventoryHeader(),
-                  const SizedBox(height: 20),
-                  InventorySummaryCards(products: _userProducts),
-                  const SizedBox(height: 28),
-
-                  /// 🔍 Búsqueda y botón agregar producto
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InventorySearchBar(
-                          controller: _searchController,
-                          onChanged: (_) => setState(() {}),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      _buildAddProductModal(context),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-                  const InventoryFilters(),
-                  const SizedBox(height: 24),
-
-                  ///  Lista de productos
-                  Text(
-                    'Productos',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.05, // margen fluido
+                      vertical: 16,
                     ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  if (_userProducts.isEmpty)
-                    const InventoryEmptyState()
-                  else
-                    Column(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GridView.count(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisCount: crossAxisCountProducts,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 2.2,
-                          children: _paginatedProducts(iconSize),
+                        const InventoryHeader(),
+                        const SizedBox(height: 20),
+
+                        // 🔹 Resumen del inventario
+                        InventorySummaryCards(products: _userProducts),
+                        const SizedBox(height: 28),
+
+                        // 🔹 Búsqueda + botón agregar
+                        Row(
+                          children: [
+                            Expanded(
+                              child: InventorySearchBar(
+                                controller: _searchController,
+                                onChanged: (_) => setState(() {}),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            _buildAddProductModal(context),
+                          ],
                         ),
+
                         const SizedBox(height: 16),
-                        _buildPagination(),
+                        const InventoryFilters(),
+                        const SizedBox(height: 24),
+
+                        // 🔹 Lista de productos
+                        Text(
+                          'Productos',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 12),
+
+                        if (_userProducts.isEmpty)
+                          const InventoryEmptyState()
+                        else
+                          Column(
+                            children: [
+                              GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent:
+                                          360, // máx ancho de tarjeta
+                                      crossAxisSpacing: 16,
+                                      mainAxisSpacing: 16,
+                                      childAspectRatio: 2.2,
+                                    ),
+                                itemCount: _paginatedProducts(iconSize).length,
+                                itemBuilder: (_, i) =>
+                                    _paginatedProducts(iconSize)[i],
+                              ),
+                              const SizedBox(height: 16),
+                              _buildPagination(),
+                            ],
+                          ),
                       ],
                     ),
-                ],
+                  ),
+                ),
               ),
             );
           },
@@ -121,13 +134,12 @@ class _InventoryScreensState extends State<InventoryScreens> {
     );
   }
 
-  ///  Modal dinámico reutilizable (Agregar producto)
+  /// 🔹 Modal: Agregar producto
   DialogModalWidget _buildAddProductModal(BuildContext context) {
     return DialogModalWidget(
       title: 'Agregar producto',
       buttonLabel: 'Agregar',
       fields: [
-        // 🧱 Agregamos un Material aquí
         Material(
           color: Colors.transparent,
           child: Form(
@@ -182,7 +194,7 @@ class _InventoryScreensState extends State<InventoryScreens> {
     );
   }
 
-  ///  Paginación de productos
+  /// 🔹 Paginación de productos
   List<Widget> _paginatedProducts(double iconSize) {
     final start = (_currentPage - 1) * _itemsPerPage;
     final end = start + _itemsPerPage;
@@ -205,7 +217,7 @@ class _InventoryScreensState extends State<InventoryScreens> {
     }).toList();
   }
 
-  ///  Widget reutilizable de paginación
+  /// 🔹 Widget de paginación
   Widget _buildPagination() {
     final totalPages = (_userProducts.length / _itemsPerPage).ceil();
     if (totalPages <= 1) return const SizedBox.shrink();
@@ -219,7 +231,7 @@ class _InventoryScreensState extends State<InventoryScreens> {
     );
   }
 
-  /// Modal para editar producto
+  /// 🔹 Modal para editar producto
   void _editProduct(Map<String, dynamic> product, int index) {
     _nameController.text = product['name'];
     _priceController.text = product['price'];

@@ -18,13 +18,11 @@ class DashboardCardData {
 
 class DashboardCards extends StatelessWidget {
   final Color successColor, dangerColor;
-  final int crossAxisCount;
 
   const DashboardCards({
     super.key,
     required this.successColor,
     required this.dangerColor,
-    required this.crossAxisCount,
   });
 
   @override
@@ -46,24 +44,29 @@ class DashboardCards extends StatelessWidget {
       ),
     ];
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 2,
-      ),
-      itemCount: cards.length,
-      itemBuilder: (_, i) {
-        final c = cards[i];
-        return InfoCardWidget(
-          icon: c.icon,
-          title: c.title,
-          subtitle: c.subtitle,
-          detail: c.detail,
-          color: c.color,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 320,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 2,
+          ),
+          itemCount: cards.length,
+          itemBuilder: (_, i) {
+            final c = cards[i];
+            return InfoCardWidget(
+              icon: c.icon,
+              title: c.title,
+              subtitle: c.subtitle,
+              detail: c.detail,
+              color: c.color,
+            );
+          },
         );
       },
     );

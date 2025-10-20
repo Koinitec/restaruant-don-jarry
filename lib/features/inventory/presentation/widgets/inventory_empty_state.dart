@@ -6,26 +6,50 @@ class InventoryEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textColor = Colors.grey.shade600;
+    final iconColor = Colors.grey.shade400;
+
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(FIcons.packageSearch, size: 80, color: Colors.grey.shade400),
-            const SizedBox(height: 16),
-            const Text(
-              'No hay productos aún',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Agrega tu primer producto para comenzar a gestionar el inventario.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
-            ),
-            const SizedBox(height: 24),
-          ],
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                FIcons.packageSearch,
+                size: MediaQuery.of(context).size.width < 400 ? 64 : 96,
+                color: iconColor,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'No hay productos aún',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Agrega tu primer producto para comenzar a gestionar el inventario.',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: textColor,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 32),
+              // 🔹 Puedes agregar aquí un botón de acción si lo deseas:
+              // ElevatedButton(
+              //   onPressed: () {},
+              //   child: const Text('Agregar producto'),
+              // ),
+            ],
+          ),
         ),
       ),
     );

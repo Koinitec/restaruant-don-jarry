@@ -3,6 +3,7 @@ import 'package:forui/forui.dart';
 
 class InventoryFilters extends StatefulWidget {
   final ValueChanged<String>? onFilterSelected;
+
   final String? selectedFilter;
 
   const InventoryFilters({
@@ -16,7 +17,12 @@ class InventoryFilters extends StatefulWidget {
 }
 
 class _InventoryFiltersState extends State<InventoryFilters> {
-  final List<String> _filters = const [
+  static const double _filterHeight = 40.0;
+  static const double _horizontalPadding = 8.0;
+  static const double _filterSpacing = 8.0;
+  static const double _fontSize = 14.0;
+
+  static const List<String> _filters = [
     'Platos Fuertes',
     'Bebidas',
     'Postres',
@@ -40,29 +46,28 @@ class _InventoryFiltersState extends State<InventoryFilters> {
     widget.onFilterSelected?.call(filter);
   }
 
+  Widget _buildFilterBadge(String filter) {
+    final bool isSelected = _selected == filter;
+
+    return GestureDetector(
+      onTap: () => _onFilterTap(filter),
+      child: FBadge(
+        style: isSelected ? FBadgeStyle.primary() : FBadgeStyle.secondary(),
+        child: Text(filter, style: const TextStyle(fontSize: _fontSize)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: _filterHeight,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        itemBuilder: (context, index) {
-          final filter = _filters[index];
-          final bool isSelected = _selected == filter;
-
-          return GestureDetector(
-            onTap: () => _onFilterTap(filter),
-            child: FBadge(
-              style: isSelected
-                  ? FBadgeStyle.primary()
-                  : FBadgeStyle.secondary(),
-              child: Text(filter, style: const TextStyle(fontSize: 14)),
-            ),
-          );
-        },
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        padding: const EdgeInsets.symmetric(horizontal: _horizontalPadding),
         itemCount: _filters.length,
+        itemBuilder: (context, index) => _buildFilterBadge(_filters[index]),
+        separatorBuilder: (_, _) => const SizedBox(width: _filterSpacing),
       ),
     );
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-/// Widget reutilizable para mostrar información resumida en una tarjeta.
+/// Widget reutilizable para mostrar información resumida en forma de tarjeta.
 ///
-/// Ideal para dashboards o paneles con estadísticas.
+/// Totalmente responsivo para móviles y tablets.
 ///
-/// ### Ejemplo de uso:
+/// Ejemplo:
 /// ```dart
 /// InfoCardWidget(
 ///   icon: FIcons.dollarSign,
@@ -15,14 +15,6 @@ import 'package:forui/forui.dart';
 ///   color: Colors.green,
 /// )
 /// ```
-///
-/// ### Parámetros:
-/// - [icon]: Ícono principal de la tarjeta.
-/// - [title]: Título de la tarjeta.
-/// - [subtitle]: Texto destacado (por ejemplo, monto o cantidad).
-/// - [detail]: Texto adicional (por ejemplo, descripción o tendencia).
-/// - [color]: Color principal para el ícono y texto.
-/// - [iconSize]: Tamaño del ícono (por defecto 28).
 class InfoCardWidget extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -41,61 +33,91 @@ class InfoCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double scale = (constraints.maxWidth / 400).clamp(0.75, 1.3);
+        final bool isVertical = constraints.maxWidth < 300;
 
-    final scale = (screenWidth / 400).clamp(0.8, 1.5);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FCard(
+            child: Padding(
+              padding: EdgeInsets.all(16 * scale),
+              child: Flex(
+                direction: isVertical ? Axis.vertical : Axis.horizontal,
+                crossAxisAlignment: isVertical
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(14 * scale),
+                    ),
+                    padding: EdgeInsets.all(10 * scale),
+                    margin: EdgeInsets.only(
+                      bottom: isVertical ? 12 * scale : 0,
+                    ),
+                    child: Icon(icon, color: color, size: 36 * scale),
+                  ),
 
-    return FCard(
-      child: Padding(
-        padding: EdgeInsets.all(12 * scale),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, color: color, size: 28 * scale),
-            SizedBox(height: 12 * scale),
+                  SizedBox(width: isVertical ? 0 : 20 * scale),
 
-            Flexible(
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16 * scale,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: isVertical
+                          ? CrossAxisAlignment.center
+                          : CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 15 * scale,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: isVertical
+                              ? TextAlign.center
+                              : TextAlign.start,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 6 * scale),
+                        Text(
+                          subtitle,
+                          style: TextStyle(
+                            fontSize: 28 * scale,
+                            fontWeight: FontWeight.bold,
+                            color: color,
+                          ),
+                          textAlign: isVertical
+                              ? TextAlign.center
+                              : TextAlign.start,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 6 * scale),
+                        Text(
+                          detail,
+                          style: TextStyle(
+                            fontSize: 13 * scale,
+                            color: Colors.grey.shade600,
+                          ),
+                          textAlign: isVertical
+                              ? TextAlign.center
+                              : TextAlign.start,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-
-            SizedBox(height: 4 * scale),
-
-            Flexible(
-              child: Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 20 * scale,
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            SizedBox(height: 4 * scale),
-
-            Flexible(
-              child: Text(
-                detail,
-                style: TextStyle(
-                  fontSize: 13 * scale,
-                  color: Colors.grey.shade600,
-                ),
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

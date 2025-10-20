@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaruant_don_jarry/features/home/presentation/screens/home_screens.dart';
 import 'package:restaruant_don_jarry/features/inventory/presentation/screens/inventory_screens.dart';
-import 'package:restaruant_don_jarry/pages/menu_page.dart';
 import 'package:restaruant_don_jarry/shared/widgets/navigation/bottom_navigation_bar_widget.dart';
 
 class MainLayout extends StatefulWidget {
@@ -43,11 +42,12 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     final pages = [
       Scaffold(body: HomeScreens()),
-      Scaffold(body: MenuPage()),
+      Scaffold(body: Center(child: Text('Menu'))),
       Scaffold(body: Center(child: Text('Pedidos'))),
       Scaffold(body: InventoryScreens()),
       Scaffold(body: Center(child: Text('Reportes'))),
       Scaffold(body: Center(child: Text('Ventas'))),
+      Scaffold(body: Center(child: Text('Usuarios'))),
     ];
 
     return Scaffold(

@@ -19,61 +19,66 @@ class HomeScreens extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final width = constraints.maxWidth;
+
+            // Escala suave del tamaño del título
             final double titleFontSize = (width / 30).clamp(18, 28);
-            final int crossAxisCount = (width ~/ 300).clamp(1, 2);
 
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header con menú desplegable
-                  FHeader(
-                    title: Text(
-                      'Panel de Ventas',
-                      style: TextStyle(
-                        fontSize: titleFontSize,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    suffixes: [
-                      PopoverMenuWidget(
-                        maxHeight: width < 600
-                            ? 200
-                            : (width < 1024 ? 250 : 300),
-                        menuGroups: [
-                          FItemGroup(
-                            children: [
-                              FItem(
-                                prefix: Icon(FIcons.settings),
-                                title: const Text('Configuraciones'),
-                              ),
-                              FItem(
-                                prefix: Icon(FIcons.logOut),
-                                title: const Text('Cerrar sesión'),
-                              ),
-                            ],
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 🔹 Encabezado con menú
+                        FHeader(
+                          title: Text(
+                            'Panel de Ventas',
+                            style: TextStyle(
+                              fontSize: titleFontSize,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ],
-                        child: Icon(FIcons.ellipsis),
-                      ),
-                    ],
+                          suffixes: [
+                            PopoverMenuWidget(
+                              menuGroups: [
+                                FItemGroup(
+                                  children: [
+                                    FItem(
+                                      prefix: const Icon(FIcons.settings),
+                                      title: const Text('Configuraciones'),
+                                    ),
+                                    FItem(
+                                      prefix: const Icon(FIcons.logOut),
+                                      title: const Text('Cerrar sesión'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                              child: const Icon(FIcons.ellipsis),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // 🔹 Grid de tarjetas (ya responsivo sin if)
+                        DashboardCards(
+                          successColor: successColor,
+                          dangerColor: dangerColor,
+                        ),
+
+                        const SizedBox(height: 24),
+
+                        // 🔹 Actividad reciente
+                        const RecentActivitySection(),
+                      ],
+                    ),
                   ),
-
-                  const SizedBox(height: 16),
-
-                  // Grid de tarjetas del dashboard
-                  DashboardCards(
-                    successColor: successColor,
-                    dangerColor: dangerColor,
-                    crossAxisCount: crossAxisCount,
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Sección de actividad reciente
-                  const RecentActivitySection(),
-                ],
+                ),
               ),
             );
           },
