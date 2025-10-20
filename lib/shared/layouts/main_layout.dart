@@ -1,66 +1,131 @@
 import 'package:flutter/material.dart';
+import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
+import 'package:restaruant_don_jarry/shared/widgets/navigation/bottom_navigation_bar/bottom_navigation_bar_item_data.dart';
+import 'package:restaruant_don_jarry/shared/widgets/navigation/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
+import 'package:restaruant_don_jarry/shared/widgets/navigation/sidebar/sidebar_widget.dart';
 import 'package:restaruant_don_jarry/features/home/presentation/screens/home_screens.dart';
 import 'package:restaruant_don_jarry/features/inventory/presentation/screens/inventory_screens.dart';
-import 'package:restaruant_don_jarry/shared/widgets/navigation/bottom_navigation_bar_widget.dart';
 
 class MainLayout extends StatefulWidget {
-  const MainLayout({super.key});
+  final Widget child;
+  const MainLayout({super.key, required this.child});
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  int _currentIndex = 0;
-  late final PageController _pageController;
+  int currentIndex = 0;
+  late final PageController pageController;
+
+  final List<String> routes = ['/home', '/inventory'];
+  final List<Widget> pages = const [HomeScreens(), InventoryScreens()];
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _currentIndex);
+    pageController = PageController(initialPage: currentIndex, keepPage: true);
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
-  void _onPageChanged(int index) {
-    setState(() => _currentIndex = index);
-  }
+  /// Toca la barra de navegación
+  void onNavTap(int index) {
+    if (index == currentIndex) return;
 
-  void _onNavChanged(int index) {
-    _pageController.animateToPage(
+    pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
+
+    // También actualiza la ruta
+    GoRouter.of(context).go(routes[index]);
+
+    setState(() => currentIndex = index);
+  }
+
+  void onPageChanged(int index) {
+    if (index == currentIndex) return;
+    setState(() => currentIndex = index);
+
+    // Actualiza la ruta
+    GoRouter.of(context).go(routes[index]);
   }
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      Scaffold(body: HomeScreens()),
-      Scaffold(body: Center(child: Text('Menu'))),
-      Scaffold(body: Center(child: Text('Pedidos'))),
-      Scaffold(body: InventoryScreens()),
-      Scaffold(body: Center(child: Text('Reportes'))),
-      Scaffold(body: Center(child: Text('Ventas'))),
-      Scaffold(body: Center(child: Text('Usuarios'))),
-    ];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isTabletOrDesktop = constraints.maxWidth >= 700;
 
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: const BouncingScrollPhysics(),
-        onPageChanged: _onPageChanged,
-        children: pages,
-      ),
-      bottomNavigationBar: BottomNavigationBarWidget(
-        currentIndex: _currentIndex,
-        onChanged: _onNavChanged,
-      ),
+        // Sidebar para tablet/escritorio
+        final sidebar = SidebarWidget(
+          title: 'Don Jarry',
+          subtitle: 'Administrador',
+          groups: [
+            FSidebarGroup(
+              children: [
+                FSidebarItem(
+                  icon: const Icon(FIcons.house),
+                  label: const Text('Inicio'),
+                  selected: currentIndex == 0,
+                  onPress: () => onNavTap(0),
+                ),
+                FSidebarItem(
+                  icon: const Icon(FIcons.archive),
+                  label: const Text('Inventario'),
+                  selected: currentIndex == 1,
+                  onPress: () => onNavTap(1),
+                ),
+              ],
+            ),
+          ],
+        );
+
+        // Contenido principal con PageView
+        final content = PageView(
+          controller: pageController,
+          physics: isTabletOrDesktop
+              ? const NeverScrollableScrollPhysics()
+              : const BouncingScrollPhysics(),
+          onPageChanged: onPageChanged,
+          children: pages,
+        );
+
+        // Barra inferior para móvil
+        final bottomNav = BottomNavigationBarWidget(
+          currentIndex: currentIndex,
+          items: [
+            BottomNavigationBarItemData(icon: FIcons.house, label: 'Inicio'),
+            BottomNavigationBarItemData(
+              icon: FIcons.archive,
+              label: 'Inventario',
+            ),
+          ],
+          onTap: onNavTap,
+        );
+
+        return Scaffold(
+          body: Row(
+            children: [
+              if (isTabletOrDesktop) sidebar,
+              Expanded(child: content),
+            ],
+          ),
+          bottomNavigationBar: bottomNav.visible(!isTabletOrDesktop),
+        );
+      },
     );
   }
+}
+
+/// Extensión para mostrar/ocultar widgets fácilmente
+extension VisibilityExtension on Widget {
+  Widget visible(bool isVisible) => Visibility(visible: isVisible, child: this);
 }

@@ -23,10 +23,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login() {
     if (!_formKey.currentState!.validate()) return;
-    context.go('/main');
+    context.go('/home');
   }
 
- Widget _field(Widget field) =>
+  Widget _field(Widget field) =>
       Padding(padding: const EdgeInsets.symmetric(vertical: 8), child: field);
 
   @override

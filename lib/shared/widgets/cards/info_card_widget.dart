@@ -69,6 +69,7 @@ class InfoCardWidget extends StatelessWidget {
                       crossAxisAlignment: isVertical
                           ? CrossAxisAlignment.center
                           : CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           title,
@@ -86,14 +87,15 @@ class InfoCardWidget extends StatelessWidget {
                         Text(
                           subtitle,
                           style: TextStyle(
-                            fontSize: 28 * scale,
+                            fontSize: 24 * scale,
                             fontWeight: FontWeight.bold,
                             color: color,
+                            height: 1.3,
                           ),
                           textAlign: isVertical
                               ? TextAlign.center
                               : TextAlign.start,
-                          maxLines: 1,
+                          maxLines: 4,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: 6 * scale),
