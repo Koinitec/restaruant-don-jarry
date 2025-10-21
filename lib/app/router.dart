@@ -2,11 +2,11 @@ import 'package:go_router/go_router.dart';
 import 'package:restaruant_don_jarry/features/auth/presentation/screens/login_screen.dart';
 import 'package:restaruant_don_jarry/features/home/presentation/screens/home_screens.dart';
 import 'package:restaruant_don_jarry/features/inventory/presentation/screens/inventory_screens.dart';
+import 'package:restaruant_don_jarry/features/sales/presetantion/screens/sales_screens.dart';
+import 'package:restaruant_don_jarry/features/users/presentation/screens/users_screens.dart';
 import 'package:restaruant_don_jarry/shared/layouts/main_layout.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: '/login',
-
   routes: [
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
 
@@ -23,6 +23,14 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/inventory',
           builder: (context, state) => const InventoryScreens(),
+        ),
+        GoRoute(
+          path: '/sales',
+          builder: (context, state) => const SalesScreens(),
+        ),
+        GoRoute(
+          path: '/users',
+          builder: (context, state) => const UsersScreens(),
         ),
       ],
     ),

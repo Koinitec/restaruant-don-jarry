@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:restaruant_don_jarry/shared/widgets/headers/headers_widget.dart';
 
-class InventoryHeader extends StatelessWidget {
-  const InventoryHeader({super.key});
+class UsersHeader extends StatelessWidget {
+  const UsersHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
     return HeaderWidget(
       title: Text(
-        'Inventario',
+        'Usuarios',
         style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       ),
       nested: true,

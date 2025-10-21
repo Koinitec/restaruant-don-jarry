@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:restaruant_don_jarry/features/users/presentation/widgets/users_empty_state.dart';
+import 'package:restaruant_don_jarry/features/users/presentation/widgets/users_filters.dart';
+import 'package:restaruant_don_jarry/features/users/presentation/widgets/users_header.dart';
+import 'package:restaruant_don_jarry/features/users/presentation/widgets/users_summary_cards.dart';
+import 'package:restaruant_don_jarry/features/users/presentation/widgets/users_search_bar.dart';
+import 'package:restaruant_don_jarry/features/users/presentation/widgets/users_card.dart';
 import 'package:restaruant_don_jarry/shared/widgets/pagination/pagination_widget.dart';
 import 'package:restaruant_don_jarry/shared/widgets/modal/dialog_modal_widget.dart';
-import '../widgets/inventory_header.dart';
-import '../widgets/inventory_summary_cards.dart';
-import '../widgets/inventory_search_bar.dart';
-import '../widgets/inventory_filters.dart';
-import '../widgets/inventory_product_card.dart';
-import '../widgets/inventory_empty_state.dart';
 
-class InventoryScreens extends StatefulWidget {
-  const InventoryScreens({super.key});
+class UsersScreens extends StatefulWidget {
+  const UsersScreens({super.key});
 
   @override
-  State<InventoryScreens> createState() => _InventoryScreensState();
+  State<UsersScreens> createState() => _UsersScreensState();
 }
 
-class _InventoryScreensState extends State<InventoryScreens> {
-  // Controllers & Form
+class _UsersScreensState extends State<UsersScreens> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  // Data
-  final List<Map<String, dynamic>> _userProducts = [];
+  final List<Map<String, dynamic>> _users = [];
   int _currentPage = 1;
   final int _itemsPerPage = 6;
 
-  // Colors
-  Color get primaryColor => const Color(0xFFd35400);
-  Color get warningColor => const Color(0xFFf39c12);
+  Color get primaryColor => Colors.blue;
+  Color get warningColor => Colors.orange;
   Color get dangerColor => Colors.redAccent;
 
   @override
@@ -64,42 +61,43 @@ class _InventoryScreensState extends State<InventoryScreens> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InventoryHeader(),
+                        const UsersHeader(),
                         const SizedBox(height: 20),
-                        InventorySummaryCards(products: _userProducts),
+                        UsersSummaryCards(users: _users),
                         const SizedBox(height: 28),
                         _buildSearchAndAddButton(context),
                         const SizedBox(height: 16),
-                        const InventoryFilters(),
+                        const UsersFilters(),
                         const SizedBox(height: 24),
                         Text(
-                          'Productos',
+                          'Usuarios',
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 12),
-                        ...(_userProducts.isEmpty
-                            ? [const InventoryEmptyState()]
-                            : [
-                                GridView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithMaxCrossAxisExtent(
-                                        maxCrossAxisExtent: 360,
-                                        crossAxisSpacing: 16,
-                                        mainAxisSpacing: 16,
-                                        childAspectRatio: 2.2,
-                                      ),
-                                  itemCount: _paginatedProducts(
-                                    iconSize,
-                                  ).length,
-                                  itemBuilder: (_, i) =>
-                                      _paginatedProducts(iconSize)[i],
-                                ),
-                                const SizedBox(height: 16),
-                                _buildPagination(),
-                              ]),
+                        _users.isEmpty
+                            ? const UsersEmptyState()
+                            : Column(
+                                children: [
+                                  GridView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    gridDelegate:
+                                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                                          maxCrossAxisExtent: 360,
+                                          crossAxisSpacing: 16,
+                                          mainAxisSpacing: 16,
+                                          childAspectRatio: 2.2,
+                                        ),
+                                    itemCount: _paginatedUsers(iconSize).length,
+                                    itemBuilder: (_, i) =>
+                                        _paginatedUsers(iconSize)[i],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  _buildPagination(),
+                                ],
+                              ),
                       ],
                     ),
                   ),
@@ -119,25 +117,25 @@ class _InventoryScreensState extends State<InventoryScreens> {
     return Row(
       children: [
         Expanded(
-          child: InventorySearchBar(
+          child: UsersSearchBar(
             controller: _searchController,
             onChanged: (_) => setState(() {}),
           ),
         ),
         const SizedBox(width: 12),
-        _buildAddProductModal(context),
+        _buildAddUserModal(context),
       ],
     );
   }
 
   // --------------------
-  // Modal: Agregar producto
+  // Modal: Agregar usuario
   // --------------------
-  DialogModalWidget _buildAddProductModal(BuildContext context) {
+  DialogModalWidget _buildAddUserModal(BuildContext context) {
     return DialogModalWidget(
-      title: 'Agregar producto',
+      title: 'Agregar usuario',
       buttonLabel: 'Agregar',
-      fields: [_buildProductForm()],
+      fields: [_buildUserForm()],
       actions: [_buildCancelButton(), _buildSaveButton(add: true)],
     );
   }
@@ -145,7 +143,7 @@ class _InventoryScreensState extends State<InventoryScreens> {
   // --------------------
   // Formulario compartido
   // --------------------
-  Widget _buildProductForm() {
+  Widget _buildUserForm() {
     return Material(
       color: Colors.transparent,
       child: Form(
@@ -153,7 +151,7 @@ class _InventoryScreensState extends State<InventoryScreens> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildTextField(_nameController, 'Nombre del producto'),
+            _buildTextField(_nameController, 'Nombre del usuario'),
             const SizedBox(height: 12),
             _buildTextField(
               _priceController,
@@ -197,13 +195,17 @@ class _InventoryScreensState extends State<InventoryScreens> {
       onPress: () {
         if (_formKey.currentState!.validate()) {
           setState(() {
-            final product = {
+            final user = {
               'name': _nameController.text,
               'price': _priceController.text,
+              'role': 'Empleado', // default role
             };
-            (add
-                ? _userProducts.add(product)
-                : _userProducts[index!] = product);
+            if (add) {
+              _users.add(user);
+            } else {
+              _users[index!] = user;
+            }
+
             _nameController.clear();
             _priceController.clear();
           });
@@ -215,23 +217,23 @@ class _InventoryScreensState extends State<InventoryScreens> {
   }
 
   // --------------------
-  // Paginación de productos
+  // Paginación de usuarios
   // --------------------
-  List<Widget> _paginatedProducts(double iconSize) {
+  List<Widget> _paginatedUsers(double iconSize) {
     final start = (_currentPage - 1) * _itemsPerPage;
-    final end = (start + _itemsPerPage).clamp(0, _userProducts.length);
-    final pageItems = _userProducts.sublist(start, end);
+    final end = (start + _itemsPerPage).clamp(0, _users.length);
+    final pageItems = _users.sublist(start, end);
 
     return pageItems.asMap().entries.map((entry) {
       final index = start + entry.key;
-      final product = entry.value;
+      final user = entry.value;
 
-      return InventoryProductCard(
-        product: product,
+      return UsersCard(
+        user: user,
         index: index,
         iconSize: iconSize,
-        onEdit: () => _showEditProduct(index),
-        onDelete: () => setState(() => _userProducts.removeAt(index)),
+        onEdit: () => _showEditUser(index),
+        onDelete: () => setState(() => _users.removeAt(index)),
       );
     }).toList();
   }
@@ -240,7 +242,7 @@ class _InventoryScreensState extends State<InventoryScreens> {
   // Widget de paginación
   // --------------------
   Widget _buildPagination() {
-    final totalPages = (_userProducts.length / _itemsPerPage).ceil();
+    final totalPages = (_users.length / _itemsPerPage).ceil();
     return totalPages > 1
         ? PaginationWidget(
             pages: totalPages,
@@ -251,19 +253,19 @@ class _InventoryScreensState extends State<InventoryScreens> {
   }
 
   // --------------------
-  // Editar producto
+  // Editar usuario
   // --------------------
-  void _showEditProduct(int index) {
-    final product = _userProducts[index];
-    _nameController.text = product['name'];
-    _priceController.text = product['price'];
+  void _showEditUser(int index) {
+    final user = _users[index];
+    _nameController.text = user['name'];
+    _priceController.text = user['price'];
 
     showFDialog(
       context: context,
-      barrierLabel: 'Editar producto',
+      barrierLabel: 'Editar usuario',
       builder: (context, style, animation) => FDialog(
-        title: const Text('Editar producto'),
-        body: _buildProductForm(),
+        title: const Text('Editar usuario'),
+        body: _buildUserForm(),
         actions: [
           _buildCancelButton(),
           _buildSaveButton(add: false, index: index),

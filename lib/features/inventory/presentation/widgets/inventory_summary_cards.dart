@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:restaruant_don_jarry/shared/widgets/cards/info_card_widget.dart';
+import 'package:restaruant_don_jarry/shared/models/card_info.dart';
 
 class InventorySummaryCards extends StatelessWidget {
   static const double _maxContainerWidth = 1400.0;
@@ -23,22 +24,22 @@ class InventorySummaryCards extends StatelessWidget {
   int get _outOfStockCount =>
       products.where((p) => (p['stock'] ?? 0) == 0).length;
 
-  List<_CardData> get _cards => [
-    _CardData(
+  List<CardInfo> get _cards => [
+    CardInfo(
       icon: FIcons.package,
       title: 'Total de Productos',
       subtitle: '${products.length}',
       detail: 'Todos los productos',
       color: _primaryColor,
     ),
-    _CardData(
+    CardInfo(
       icon: FIcons.circleAlert,
       title: 'Stock Bajo',
       subtitle: '$_stockLowCount',
       detail: 'Inventario limitado',
       color: _warningColor,
     ),
-    _CardData(
+    CardInfo(
       icon: FIcons.triangleAlert,
       title: 'Agotados',
       subtitle: '$_outOfStockCount',
@@ -81,20 +82,4 @@ class InventorySummaryCards extends StatelessWidget {
       ),
     );
   }
-}
-
-class _CardData {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final String detail;
-  final Color color;
-
-  const _CardData({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.detail,
-    required this.color,
-  });
 }

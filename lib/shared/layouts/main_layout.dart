@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:restaruant_don_jarry/features/home/presentation/screens/home_screens.dart';
+import 'package:restaruant_don_jarry/features/inventory/presentation/screens/inventory_screens.dart';
+import 'package:restaruant_don_jarry/features/sales/presetantion/screens/sales_screens.dart';
+import 'package:restaruant_don_jarry/features/users/presentation/screens/users_screens.dart';
 import 'package:restaruant_don_jarry/shared/widgets/navigation/bottom_navigation_bar/bottom_navigation_bar_item_data.dart';
 import 'package:restaruant_don_jarry/shared/widgets/navigation/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import 'package:restaruant_don_jarry/shared/widgets/navigation/sidebar/sidebar_widget.dart';
-import 'package:restaruant_don_jarry/features/home/presentation/screens/home_screens.dart';
-import 'package:restaruant_don_jarry/features/inventory/presentation/screens/inventory_screens.dart';
 
 class MainLayout extends StatefulWidget {
   final Widget child;
@@ -19,8 +21,21 @@ class _MainLayoutState extends State<MainLayout> {
   int currentIndex = 0;
   late final PageController pageController;
 
-  final List<String> routes = ['/home', '/inventory'];
-  final List<Widget> pages = const [HomeScreens(), InventoryScreens()];
+  final List<String> routes = ['/home', '/inventory', '/sales', '/users'];
+
+  final List<Widget> pages = const [
+    HomeScreens(),
+    InventoryScreens(),
+    SalesScreens(),
+    UsersScreens(),
+  ];
+
+  final List<BottomNavigationBarItemData> navItems = const [
+    BottomNavigationBarItemData(icon: FIcons.house, label: 'Inicio'),
+    BottomNavigationBarItemData(icon: FIcons.archive, label: 'Inventario'),
+    BottomNavigationBarItemData(icon: FIcons.shoppingCart, label: 'Ventas'),
+    BottomNavigationBarItemData(icon: FIcons.users, label: 'Usuarios'),
+  ];
 
   @override
   void initState() {
@@ -34,27 +49,23 @@ class _MainLayoutState extends State<MainLayout> {
     super.dispose();
   }
 
-  /// Toca la barra de navegación
   void onNavTap(int index) {
     if (index == currentIndex) return;
-
     pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
-
-    // También actualiza la ruta
-    GoRouter.of(context).go(routes[index]);
-
-    setState(() => currentIndex = index);
+    _updateRoute(index);
   }
 
   void onPageChanged(int index) {
     if (index == currentIndex) return;
-    setState(() => currentIndex = index);
+    _updateRoute(index);
+  }
 
-    // Actualiza la ruta
+  void _updateRoute(int index) {
+    setState(() => currentIndex = index);
     GoRouter.of(context).go(routes[index]);
   }
 
@@ -62,70 +73,61 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isTabletOrDesktop = constraints.maxWidth >= 700;
-
-        // Sidebar para tablet/escritorio
-        final sidebar = SidebarWidget(
-          title: 'Don Jarry',
-          subtitle: 'Administrador',
-          groups: [
-            FSidebarGroup(
-              children: [
-                FSidebarItem(
-                  icon: const Icon(FIcons.house),
-                  label: const Text('Inicio'),
-                  selected: currentIndex == 0,
-                  onPress: () => onNavTap(0),
-                ),
-                FSidebarItem(
-                  icon: const Icon(FIcons.archive),
-                  label: const Text('Inventario'),
-                  selected: currentIndex == 1,
-                  onPress: () => onNavTap(1),
-                ),
-              ],
-            ),
-          ],
-        );
-
-        // Contenido principal con PageView
-        final content = PageView(
-          controller: pageController,
-          physics: isTabletOrDesktop
-              ? const NeverScrollableScrollPhysics()
-              : const BouncingScrollPhysics(),
-          onPageChanged: onPageChanged,
-          children: pages,
-        );
-
-        // Barra inferior para móvil
-        final bottomNav = BottomNavigationBarWidget(
-          currentIndex: currentIndex,
-          items: [
-            BottomNavigationBarItemData(icon: FIcons.house, label: 'Inicio'),
-            BottomNavigationBarItemData(
-              icon: FIcons.archive,
-              label: 'Inventario',
-            ),
-          ],
-          onTap: onNavTap,
-        );
+        final bool isTabletOrDesktop = constraints.maxWidth >= 700;
 
         return Scaffold(
           body: Row(
             children: [
-              if (isTabletOrDesktop) sidebar,
-              Expanded(child: content),
+              if (isTabletOrDesktop) _buildSidebar(),
+              Expanded(child: _buildContent(isTabletOrDesktop)),
             ],
           ),
-          bottomNavigationBar: bottomNav.visible(!isTabletOrDesktop),
+          bottomNavigationBar: _buildBottomNav().visible(!isTabletOrDesktop),
         );
       },
     );
   }
+
+  Widget _buildSidebar() {
+    return SidebarWidget(
+      title: 'Don Jarry',
+      subtitle: 'Administrador',
+      groups: [
+        FSidebarGroup(
+          children: List.generate(navItems.length, (i) {
+            final item = navItems[i];
+            return FSidebarItem(
+              icon: Icon(item.icon),
+              label: Text(item.label),
+              selected: currentIndex == i,
+              onPress: () => onNavTap(i),
+            );
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContent(bool isTabletOrDesktop) {
+    return PageView(
+      controller: pageController,
+      physics: isTabletOrDesktop
+          ? const NeverScrollableScrollPhysics()
+          : const BouncingScrollPhysics(),
+      onPageChanged: onPageChanged,
+      children: pages,
+    );
+  }
+
+  Widget _buildBottomNav() {
+    return BottomNavigationBarWidget(
+      currentIndex: currentIndex,
+      items: navItems,
+      onTap: onNavTap,
+    );
+  }
 }
 
-/// Extensión para mostrar/ocultar widgets fácilmente
 extension VisibilityExtension on Widget {
   Widget visible(bool isVisible) => Visibility(visible: isVisible, child: this);
 }

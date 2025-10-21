@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class InventoryEmptyState extends StatelessWidget {
-  const InventoryEmptyState({super.key});
+class UsersEmptyState extends StatelessWidget {
+  const UsersEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +19,13 @@ class InventoryEmptyState extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                FIcons.packageSearch,
+                Icons.person_outline,
                 size: MediaQuery.of(context).size.width < 400 ? 64 : 96,
                 color: iconColor,
               ),
               const SizedBox(height: 20),
               Text(
-                'No hay productos aún',
+                'No hay usuarios aún',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontSize: 20,
@@ -34,7 +34,7 @@ class InventoryEmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'Agrega tu primer producto para comenzar a gestionar el inventario.',
+                'Agrega tu primer usuario para comenzar a gestionar los roles y permisos.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: textColor,

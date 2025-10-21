@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:restaruant_don_jarry/shared/models/card_info.dart';
 import 'package:restaruant_don_jarry/shared/widgets/cards/info_card_widget.dart';
 
 class DashboardCards extends StatelessWidget {
@@ -21,14 +22,14 @@ class DashboardCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cards = [
-      DashboardCardData(
+      CardInfo(
         icon: FIcons.packageOpen,
         title: 'Inventario Crítico',
         subtitle: 'Papas, Pollo',
         detail: 'Revisar reposición',
         color: dangerColor,
       ),
-      DashboardCardData(
+      CardInfo(
         icon: FIcons.dollarSign,
         title: 'Ventas del Día',
         subtitle: '\$4,120',
@@ -66,20 +67,4 @@ class DashboardCards extends StatelessWidget {
       ),
     );
   }
-}
-
-class DashboardCardData {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final String detail;
-  final Color color;
-
-  const DashboardCardData({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.detail,
-    required this.color,
-  });
 }
