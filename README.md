@@ -1,26 +1,28 @@
-# restaruant_don_jarry
+# Restaruante Don Jarry
 
-A new Flutter project.
+Aplicación móvil desarrollada en **Flutter**, diseñada para la gestión del restaurante *Don Jarry*.
+Implementa **arquitectura limpia (Clean Architecture + DDD)**, navegación con **GoRouter**, manejo de estado con **Riverpod** e integración modular.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Tecnologías principales
 
-A few resources to get you started if this is your first Flutter project:
+* **Flutter 3.x** — Framework multiplataforma
+* **Dart** — Lenguaje base del proyecto
+* **GoRouter** — Sistema de rutas y navegación
+*  **Riverpod** — Manejo de estado reactivo
+* **Dio** — Cliente HTTP con interceptores
+*  **Clean Architecture / DDD** — Separación por capas y responsabilidades
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+##  Estructura del proyecto
 
-
-arquitectura
+```
 lib/
 ├── app/
 │   ├── router.dart              # Configuración de navegación global (GoRouter)
-│   ├── theme.dart               # Temas (Material 3)
+│   ├── theme.dart               # Temas y estilos (Material 3)
 │   ├── di.dart                  # Inyección de dependencias
 │   └── app.dart                 # Punto principal de la app (MyApp)
 │
@@ -28,33 +30,62 @@ lib/
 │   ├── constants/               # Constantes globales (URLs, colores, etc.)
 │   ├── errors/                  # Manejo de errores (Failure, Exception)
 │   ├── network/                 # Configuración de red (Dio client, interceptors)
-│   ├── usecases/                # Casos de uso comunes (si se comparten entre features)
-│   └── utils/                   # Funciones o helpers generales
+│   ├── usecases/                # Casos de uso comunes compartidos
+│   └── utils/                   # Funciones y helpers generales
 │
 ├── features/
-│   ├── auth/                    # Feature: Autenticación
+│   ├── auth/                    # Módulo: Autenticación
 │   │   ├── data/
-│   │   │   ├── datasources/     # Clases que obtienen datos (API, local)
-│   │   │   ├── models/          # Modelos (DTOs, json_serializable)
+│   │   │   ├── datasources/     # Fuentes de datos (API, local)
+│   │   │   ├── models/          # Modelos (DTOs, JSON)
 │   │   │   └── repositories_impl/ # Implementación de repositorios
 │   │   ├── domain/
 │   │   │   ├── entities/        # Entidades puras del dominio
 │   │   │   ├── repositories/    # Interfaces abstractas
-│   │   │   └── usecases/        # Casos de uso
+│   │   │   └── usecases/        # Casos de uso específicos
 │   │   └── presentation/
 │   │       ├── providers/       # State management (Riverpod)
 │   │       ├── screens/         # Pantallas principales (UI)
 │   │       └── widgets/         # Componentes visuales
 │   │
-│   ├── home/                    # Otro módulo (ejemplo: inicio)
+│   ├── home/                    # Otro módulo (inicio)
 │   │   ├── data/
 │   │   ├── domain/
 │   │   └── presentation/
 │   │
-│   └── ...                      # Más módulos (perfil, productos, etc.)
+│   └── ...                      # Más módulos (perfil, productos, pedidos, etc.)
 │
 ├── shared/
 │   ├── widgets/                 # Widgets reutilizables
-│   └── services/                # Servicios globales (por ejemplo: storage, logger)
+│   └── services/                # Servicios globales (storage, logger, etc.)
 │
-└── main.dart                    # Entry point
+└── main.dart                    # Entry point principal
+```
+
+---
+
+## Instalación y ejecución
+
+1. Clona el repositorio:
+
+   ```bash
+   git clone https://github.com/tu_usuario/restaurant_don_jarry.git
+   ```
+
+2. Instala las dependencias:
+
+   ```bash
+   flutter pub get
+   ```
+
+3. Ejecuta el proyecto:
+
+   ```bash
+   flutter run
+   ```
+   
+## 📘 Recursos útiles
+* [Documentación oficial de Flutter](https://docs.flutter.dev/)
+* [Codelab: Tu primera app Flutter](https://docs.flutter.dev/get-started/codelab)
+* [Cookbook de Flutter](https://docs.flutter.dev/cookbook)
+* [ForUI.dev – Componentes y UI para Flutter](https://forui.dev/)
