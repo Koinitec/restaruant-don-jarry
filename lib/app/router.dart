@@ -7,9 +7,9 @@ import 'package:restaruant_don_jarry/features/users/presentation/screens/users_s
 import 'package:restaruant_don_jarry/shared/layouts/main_layout.dart';
 
 final GoRouter router = GoRouter(
+  initialLocation: '/login',
   routes: [
     GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-
     ShellRoute(
       builder: (context, state, child) {
         return MainLayout(child: child);
@@ -19,7 +19,6 @@ final GoRouter router = GoRouter(
           path: '/home',
           builder: (context, state) => const HomeScreens(),
         ),
-
         GoRoute(
           path: '/inventory',
           builder: (context, state) => const InventoryScreens(),

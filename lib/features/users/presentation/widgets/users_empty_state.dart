@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:forui/forui.dart';
 
 class UsersEmptyState extends StatelessWidget {
   const UsersEmptyState({super.key});

@@ -78,7 +78,6 @@ class _SalesFiltersState extends State<SalesFilters>
   }
 
   Future<void> _showDateRangeDialog() async {
-    // ✅ Corregido: ahora los controladores reciben vsync: this
     final startController = FDateFieldController(vsync: this);
     final endController = FDateFieldController(vsync: this);
 

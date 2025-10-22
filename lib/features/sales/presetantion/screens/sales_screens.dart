@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaruant_don_jarry/features/sales/presetantion/widgets/sales_filters.dart';
 import 'package:restaruant_don_jarry/features/sales/presetantion/widgets/sales_header.dart';
 import 'package:restaruant_don_jarry/features/sales/presetantion/widgets/sales_search_bar.dart';
 
@@ -26,7 +27,6 @@ class _SalesScreensState extends State<SalesScreens> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final width = constraints.maxWidth;
-            final iconSize = (width / 35).clamp(22, 32).toDouble();
 
             return SingleChildScrollView(
               child: Align(
@@ -44,6 +44,8 @@ class _SalesScreensState extends State<SalesScreens> {
                         SalesHeader(),
                         SizedBox(height: 20),
                         _buildSearchAndAddButton(context),
+                        SizedBox(height: 20),
+                        SalesFilters(),
                       ],
                     ),
                   ),
