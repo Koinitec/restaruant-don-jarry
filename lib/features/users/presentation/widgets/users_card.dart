@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class UsersCard extends StatelessWidget {
+class UsersCard extends StatefulWidget {
   final Map<String, dynamic> user;
   final int index;
   final double iconSize;
@@ -18,11 +18,16 @@ class UsersCard extends StatelessWidget {
   });
 
   @override
+  State<UsersCard> createState() => _UsersCardState();
+}
+
+class _UsersCardState extends State<UsersCard> {
+  @override
   Widget build(BuildContext context) {
     // Valores seguros con fallback
-    final String name = user['name'] ?? 'Sin nombre';
-    final String role = user['role'] ?? 'Empleado';
-    final String emoji = user['emoji'] ?? '👤';
+    final String name = widget.user['name'] ?? 'Sin nombre';
+    final String role = widget.user['role'] ?? 'Empleado';
+    final String emoji = widget.user['emoji'] ?? '👤';
 
     // Color según rol
     Color roleColor;
@@ -45,7 +50,7 @@ class UsersCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(emoji, style: TextStyle(fontSize: iconSize + 6)),
+            Text(emoji, style: TextStyle(fontSize: widget.iconSize + 6)),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -73,8 +78,8 @@ class UsersCard extends StatelessWidget {
             // Menú de acciones
             PopupMenuButton<String>(
               onSelected: (value) {
-                if (value == 'edit') onEdit();
-                if (value == 'delete') onDelete();
+                if (value == 'edit') widget.onEdit();
+                if (value == 'delete') widget.onDelete();
               },
               itemBuilder: (context) => [
                 const PopupMenuItem(

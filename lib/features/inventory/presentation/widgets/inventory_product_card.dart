@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class InventoryProductCard extends StatelessWidget {
+class InventoryProductCard extends StatefulWidget {
   final Map<String, dynamic> product;
   final int index;
   final double iconSize;
@@ -18,12 +18,17 @@ class InventoryProductCard extends StatelessWidget {
   });
 
   @override
+  State<InventoryProductCard> createState() => _InventoryProductCardState();
+}
+
+class _InventoryProductCardState extends State<InventoryProductCard> {
+  @override
   Widget build(BuildContext context) {
     // 🧩 Valores seguros con fallback
-    final int stock = product['stock'] is int ? product['stock'] : 0;
-    final String name = product['name'] ?? 'Sin nombre';
-    final String category = product['category'] ?? 'Sin categoría';
-    final String emoji = product['emoji'] ?? '📦';
+    final int stock = widget.product['stock'] is int ? widget.product['stock'] : 0;
+    final String name = widget.product['name'] ?? 'Sin nombre';
+    final String category = widget.product['category'] ?? 'Sin categoría';
+    final String emoji = widget.product['emoji'] ?? '📦';
 
     Color color;
     if (stock == 0) {
@@ -40,7 +45,7 @@ class InventoryProductCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(emoji, style: TextStyle(fontSize: iconSize + 6)),
+            Text(emoji, style: TextStyle(fontSize: widget.iconSize + 6)),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -72,8 +77,8 @@ class InventoryProductCard extends StatelessWidget {
             // ✅ Cambiamos el menú por íconos nativos (para evitar error de tipo)
             PopupMenuButton<String>(
               onSelected: (value) {
-                if (value == 'edit') onEdit();
-                if (value == 'delete') onDelete();
+                if (value == 'edit') widget.onEdit();
+                if (value == 'delete') widget.onDelete();
               },
               itemBuilder: (context) => [
                 const PopupMenuItem(

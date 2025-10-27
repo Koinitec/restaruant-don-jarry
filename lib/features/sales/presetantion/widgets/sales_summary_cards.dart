@@ -3,48 +3,49 @@ import 'package:forui/forui.dart';
 import 'package:restaruant_don_jarry/shared/models/card_info.dart';
 import 'package:restaruant_don_jarry/shared/widgets/cards/info_card_widget.dart';
 
-class UsersSummaryCards extends StatefulWidget {
-  final List<Map<String, dynamic>> users;
+class SalesSummaryCards extends StatefulWidget {
+  final List<Map<String, dynamic>> sales;
 
-  const UsersSummaryCards({super.key, required this.users});
+  const SalesSummaryCards({super.key, required this.sales});
 
-  static const _totalColor = Color(0xFFd35400);
-  static const _adminColor = Color(0xFFf39c12);
-  static const _sellerColor = Colors.redAccent;
+  static const _totalColor = Color(0xFF16a085);
+  static const _lowColor = Color(0xFFf39c12);
+  static const _outColor = Colors.redAccent;
 
   @override
-  State<UsersSummaryCards> createState() => _UsersSummaryCardsState();
+  State<SalesSummaryCards> createState() => _SalesSummaryCardsState();
 }
 
-class _UsersSummaryCardsState extends State<UsersSummaryCards> {
-  int get totalUsers => widget.users.length;
+class _SalesSummaryCardsState extends State<SalesSummaryCards> {
+  int get totalSales => widget.sales.length;
 
-  int get adminCount => widget.users.where((u) => (u['role'] ?? '') == 'admin').length;
+  int get lowCount => widget.sales
+      .where((s) => (s['stock'] ?? 0) < 20 && (s['stock'] ?? 0) > 0)
+      .length;
 
-  int get sellerCount =>
-      widget.users.where((u) => (u['role'] ?? '') == 'seller').length;
+  int get outCount => widget.sales.where((s) => (s['stock'] ?? 0) == 0).length;
 
   List<CardInfo> get _cards => [
     CardInfo(
-      icon: FIcons.users,
-      title: 'Total Usuarios',
-      subtitle: '$totalUsers',
+      icon: FIcons.shoppingCart,
+      title: 'Total de Ventas',
+      subtitle: '$totalSales',
       detail: '',
-      color: UsersSummaryCards._totalColor,
+      color: SalesSummaryCards._totalColor,
     ),
     CardInfo(
-      icon: FIcons.userCheck,
-      title: 'Administradores',
-      subtitle: '$adminCount',
+      icon: FIcons.circleAlert,
+      title: 'Ventas Bajas',
+      subtitle: '$lowCount',
       detail: '',
-      color: UsersSummaryCards._adminColor,
+      color: SalesSummaryCards._lowColor,
     ),
     CardInfo(
       icon: FIcons.triangleAlert,
-      title: 'Vendedores',
-      subtitle: '$sellerCount',
+      title: 'Agotadas',
+      subtitle: '$outCount',
       detail: '',
-      color: UsersSummaryCards._sellerColor,
+      color: SalesSummaryCards._outColor,
     ),
   ];
 
