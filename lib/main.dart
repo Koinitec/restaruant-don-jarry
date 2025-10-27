@@ -6,9 +6,14 @@ void main() {
   runApp(Application());
 }
 
-class Application extends StatelessWidget {
-  Application({super.key});
+class Application extends StatefulWidget {
+  const Application({super.key});
 
+  @override
+  State<Application> createState() => _ApplicationState();
+}
+
+class _ApplicationState extends State<Application> {
   final theme = FThemes.zinc.light;
 
   @override

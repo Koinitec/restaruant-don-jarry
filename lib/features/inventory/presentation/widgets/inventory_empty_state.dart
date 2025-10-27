@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class InventoryEmptyState extends StatelessWidget {
+class InventoryEmptyState extends StatefulWidget {
   const InventoryEmptyState({super.key});
 
+  @override
+  State<InventoryEmptyState> createState() => _InventoryEmptyStateState();
+}
+
+class _InventoryEmptyStateState extends State<InventoryEmptyState> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

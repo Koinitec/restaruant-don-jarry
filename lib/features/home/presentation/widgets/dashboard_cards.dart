@@ -3,7 +3,7 @@ import 'package:forui/forui.dart';
 import 'package:restaruant_don_jarry/shared/models/card_info.dart';
 import 'package:restaruant_don_jarry/shared/widgets/cards/info_card_widget.dart';
 
-class DashboardCards extends StatelessWidget {
+class DashboardCards extends StatefulWidget {
   static const double _maxContainerWidth = 1200.0;
   static const double _minCardWidth = 300.0;
   static const double _maxCardWidth = 520.0;
@@ -20,6 +20,11 @@ class DashboardCards extends StatelessWidget {
   });
 
   @override
+  State<DashboardCards> createState() => _DashboardCardsState();
+}
+
+class _DashboardCardsState extends State<DashboardCards> {
+  @override
   Widget build(BuildContext context) {
     final cards = [
       CardInfo(
@@ -27,31 +32,31 @@ class DashboardCards extends StatelessWidget {
         title: 'Inventario Crítico',
         subtitle: 'Papas, Pollo',
         detail: 'Revisar reposición',
-        color: dangerColor,
+        color: widget.dangerColor,
       ),
       CardInfo(
         icon: FIcons.dollarSign,
         title: 'Ventas del Día',
         subtitle: '\$4,120',
         detail: '↑ +15% respecto a ayer',
-        color: successColor,
+        color: widget.successColor,
       ),
     ];
 
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: _maxContainerWidth),
+        constraints: const BoxConstraints(maxWidth: DashboardCards._maxContainerWidth),
         child: Padding(
-          padding: const EdgeInsets.all(_padding),
+          padding: const EdgeInsets.all(DashboardCards._padding),
           child: Wrap(
-            spacing: _cardSpacing,
-            runSpacing: _cardSpacing,
+            spacing: DashboardCards._cardSpacing,
+            runSpacing: DashboardCards._cardSpacing,
             alignment: WrapAlignment.center,
             children: cards.map((card) {
               return ConstrainedBox(
                 constraints: const BoxConstraints(
-                  minWidth: _minCardWidth,
-                  maxWidth: _maxCardWidth,
+                  minWidth: DashboardCards._minCardWidth,
+                  maxWidth: DashboardCards._maxCardWidth,
                 ),
                 child: InfoCardWidget(
                   icon: card.icon,

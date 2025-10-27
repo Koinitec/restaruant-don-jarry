@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class UsernameField extends StatelessWidget {
+class UsernameField extends StatefulWidget {
   final TextEditingController controller;
   const UsernameField({super.key, required this.controller});
 
   @override
+  State<UsernameField> createState() => _UsernameFieldState();
+}
+
+class _UsernameFieldState extends State<UsernameField> {
+  @override
   Widget build(BuildContext context) {
     return FTextFormField(
-      controller: controller,
+      controller: widget.controller,
       hint: 'Nombre de usuario',
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) => (value?.isNotEmpty ?? false)

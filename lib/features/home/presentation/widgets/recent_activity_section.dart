@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
-class RecentActivitySection extends StatelessWidget {
+class RecentActivitySection extends StatefulWidget {
   const RecentActivitySection({super.key});
 
+  @override
+  State<RecentActivitySection> createState() => _RecentActivitySectionState();
+}
+
+class _RecentActivitySectionState extends State<RecentActivitySection> {
   @override
   Widget build(BuildContext context) {
     return Column(

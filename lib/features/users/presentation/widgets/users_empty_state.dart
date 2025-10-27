@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class UsersEmptyState extends StatelessWidget {
+class UsersEmptyState extends StatefulWidget {
   const UsersEmptyState({super.key});
 
+  @override
+  State<UsersEmptyState> createState() => _UsersEmptyStateState();
+}
+
+class _UsersEmptyStateState extends State<UsersEmptyState> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
