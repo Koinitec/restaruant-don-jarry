@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:intl/intl.dart';
 
 class SalesFilters extends StatefulWidget {
   final ValueChanged<String>? onFilterSelected;
@@ -148,7 +147,7 @@ class _SalesFiltersState extends State<SalesFilters>
         padding: const EdgeInsets.symmetric(horizontal: 8),
         itemCount: _filters.length,
         itemBuilder: (_, i) => _buildFilterBadge(_filters[i]),
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
       ),
     );
   }
