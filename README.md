@@ -1,91 +1,54 @@
-# Restaruante Don Jarry
+# restaruant-jerry
 
-Aplicación móvil desarrollada en **Flutter**, diseñada para la gestión del restaurante *Don Jarry*.
-Implementa **arquitectura limpia (Clean Architecture + DDD)**, navegación con **GoRouter**, manejo de estado con **Riverpod** e integración modular.
+This template should help get you started developing with Vue 3 in Vite.
 
----
+## Recommended IDE Setup
 
-## Tecnologías principales
+[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-* **Flutter 3.x** — Framework multiplataforma
-* **Dart** — Lenguaje base del proyecto
-* **GoRouter** — Sistema de rutas y navegación
-*  **Riverpod** — Manejo de estado reactivo
-* **Dio** — Cliente HTTP con interceptores
-*  **Clean Architecture / DDD** — Separación por capas y responsabilidades
+## Recommended Browser Setup
 
----
+- Chromium-based browsers (Chrome, Edge, Brave, etc.):
+  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
+  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
+- Firefox:
+  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
+  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
 
-##  Estructura del proyecto
+## Type Support for `.vue` Imports in TS
 
-```
-lib/
-├── app/
-│   ├── router.dart              # Configuración de navegación global (GoRouter)
-│   ├── theme.dart               # Temas y estilos (Material 3)
-│   ├── di.dart                  # Inyección de dependencias
-│   └── app.dart                 # Punto principal de la app (MyApp)
-│
-├── core/
-│   ├── constants/               # Constantes globales (URLs, colores, etc.)
-│   ├── errors/                  # Manejo de errores (Failure, Exception)
-│   ├── network/                 # Configuración de red (Dio client, interceptors)
-│   ├── usecases/                # Casos de uso comunes compartidos
-│   └── utils/                   # Funciones y helpers generales
-│
-├── features/
-│   ├── auth/                    # Módulo: Autenticación
-│   │   ├── data/
-│   │   │   ├── datasources/     # Fuentes de datos (API, local)
-│   │   │   ├── models/          # Modelos (DTOs, JSON)
-│   │   │   └── repositories_impl/ # Implementación de repositorios
-│   │   ├── domain/
-│   │   │   ├── entities/        # Entidades puras del dominio
-│   │   │   ├── repositories/    # Interfaces abstractas
-│   │   │   └── usecases/        # Casos de uso específicos
-│   │   └── presentation/
-│   │       ├── providers/       # State management (Riverpod)
-│   │       ├── screens/         # Pantallas principales (UI)
-│   │       └── widgets/         # Componentes visuales
-│   │
-│   ├── home/                    # Otro módulo (inicio)
-│   │   ├── data/
-│   │   ├── domain/
-│   │   └── presentation/
-│   │
-│   └── ...                      # Más módulos (perfil, productos, pedidos, etc.)
-│
-├── shared/
-│   ├── widgets/                 # Widgets reutilizables
-│   └── services/                # Servicios globales (storage, logger, etc.)
-│
-└── main.dart                    # Entry point principal
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vite.dev/config/).
+
+## Project Setup
+
+```sh
+bun install
 ```
 
----
+### Compile and Hot-Reload for Development
 
-## Instalación y ejecución
+```sh
+bun dev
+```
 
-1. Clona el repositorio:
+### Type-Check, Compile and Minify for Production
 
-   ```bash
-   git clone https://github.com/tu_usuario/restaurant_don_jarry.git
-   ```
+```sh
+bun run build
+```
 
-2. Instala las dependencias:
+### Run Unit Tests with [Vitest](https://vitest.dev/)
 
-   ```bash
-   flutter pub get
-   ```
+```sh
+bun test:unit
+```
 
-3. Ejecuta el proyecto:
+### Lint with [ESLint](https://eslint.org/)
 
-   ```bash
-   flutter run
-   ```
-   
-## 📘 Recursos útiles
-* [Documentación oficial de Flutter](https://docs.flutter.dev/)
-* [Codelab: Tu primera app Flutter](https://docs.flutter.dev/get-started/codelab)
-* [Cookbook de Flutter](https://docs.flutter.dev/cookbook)
-* [ForUI.dev – Componentes y UI para Flutter](https://forui.dev/)
+```sh
+bun lint
+```
